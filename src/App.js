@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import BookmarkList from './components/ListOfBookmarks/BookmarkList'
+import BookmarkList from './pages/ListOfBookmarks/BookmarkList'
 import styles from './App.module.scss'
 
 export default function App() {
