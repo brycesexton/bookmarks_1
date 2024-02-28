@@ -7,6 +7,10 @@ export default function App() {
     const [bookmarks, setBookmarks] = useState([])
     const [newBookmark, setNewBookmark] = useState({ title: '', url: '' })
 
+    //NEW NOT WORKING
+    const [user, setUser] = useState(null)
+    const [token, setToken] = useState('')
+
     const createBookmark = async () => {
         const body = { ...newBookmark }
         try {
@@ -57,6 +61,49 @@ export default function App() {
             console.error('Failed to fetch', error)
         }
     };
+
+    //NEW NOT WORKING
+    const signUp = async (credentials) => {
+        try {
+        const response  =  await fetch('/api/userRouter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+            })
+       const data = await response.json()
+            setUser(data.user)
+            setToken(data.token)
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('user', JSON.stringify(data.user))
+    }   
+        catch (error) {
+        console.error(error)
+    }
+}
+    //NEW NOT WORKING
+    const login = async (credentials) => {
+        try {
+            const response = await fetch('/api/userRouter/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(credentials)
+            })
+        const data = await response.json()
+        const tokenData = data.token;
+            localStorage.setItem('token', tokenData)
+            setToken(tokenData)
+            const userData = data.user
+            localStorage.setItem('user', JSON.stringify(userData));
+            setUser(userData)
+    }   
+        catch (error) {
+        console.error(error)
+    }    
+}
 
     useEffect(() => {
         getBookmarks()

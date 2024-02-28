@@ -32,6 +32,10 @@ function App() {
     title: '',
     url: ''
   });
+
+  //NEW NOT WORKING
+  const [user, setUser] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [token, setToken] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const createBookmark = async () => {
     const body = _objectSpread({}, newBookmark);
     try {
@@ -78,6 +82,47 @@ function App() {
       setBookmarks(data.reverse());
     } catch (error) {
       console.error('Failed to fetch', error);
+    }
+  };
+
+  //NEW NOT WORKING
+  const signUp = async credentials => {
+    try {
+      const response = await fetch('/api/userRouter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+      });
+      const data = await response.json();
+      setUser(data.user);
+      setToken(data.token);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //NEW NOT WORKING
+  const login = async credentials => {
+    try {
+      const response = await fetch('/api/userRouter/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+      });
+      const data = await response.json();
+      const tokenData = data.token;
+      localStorage.setItem('token', tokenData);
+      setToken(tokenData);
+      const userData = data.user;
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
+    } catch (error) {
+      console.error(error);
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -1268,4 +1313,4 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=App.057e41e4df19acfd3442fc6b6bfdbfba.js.map
+//# sourceMappingURL=App.c384289b302c59a5c9daa9f51b2b2dca.js.map
